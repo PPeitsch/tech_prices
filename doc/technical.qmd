@@ -1,0 +1,343 @@
+---
+title: "Análisis de Precios de Acciones Big Tech"
+format: html
+editor: visual
+---
+
+## Resumen
+
+En este análisis, se examinan las tendencias de precios de las cinco principales compañías tecnológicas de mayor capitalización bursátil: Apple (AAPL), Amazon (AMZN), Meta (META), Microsoft (MSFT) y Tesla (TSLA). Además, se evalúa la correlación de estos movimientos con el índice SP500 y otros activos relevantes como BTC, petróleo WTI y BRENT, índice NASDAQ y oro. Se presentan conclusiones preliminares sobre la magnitud de las depreciaciones y la correlación entre las acciones de las compañías seleccionadas y otros activos.
+
+## Precios
+
+En los últimos años las grandes empresas tecnológicas que cotizan en bolsa han visto bajas considerables en los precios de sus acciones, resulta interesante profundizar en este tema. Para esto se han descargado los datos de los precios de las 14 compañías tecnológicas más importantes que cotizan en la bolsa de EEUU. Una de las preguntas que podríamos intentar responder es de cuánto ha sido la magnitud de las depreciaciones. Para ello, se han examinado las tendencias de precios de las cinco principales y más importantes. Se tuvieron en cuenta solo aquellas compañías que tienen una mayor capitalización bursátil y que, a priori, se pueden vizualizar estos retrocesos significativos en los gráficos de precios para hacer el análisis más sencillo; en la **Figura 1** y **Figura 2** se puede apreciar lo comentado.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Load required libraries
+library(tidyr)
+library(dplyr)
+library(corrplot)
+library(kableExtra)
+library(ggplot2)
+library(areaplot)
+library(PerformanceAnalytics)
+library(xts)
+library(purrr)
+library(gridExtra)
+library(quantmod)
+
+# Read cleaned stock prices data
+big_tech_stock_prices_cleaned <- readRDS(here::here("data", "big_tech_stock_prices_cleaned.RDS"))
+
+# Read market capitalization data
+market_cap_df <- readRDS(here::here("data", "market_cap_df.RDS"))
+
+# Create a stacked area plot for market capitalization
+ggplot(market_cap_df, aes(x = reorder(stock_symbol, -market_cap), y = market_cap, fill = stock_symbol)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Figura 2. Capitalización Bursátil de compañías Big Tech",
+       x = "Fecha (años)",
+       y = "Cap. Bursátil (bill. U$s)") +
+  theme_minimal() +
+  theme(legend.text = element_text(size = 10),
+        legend.position = "bottom",
+        plot.title = element_text(size = 16, hjust = 0.5))
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Select the top 5 companies by market capitalization
+top_5_market_cap <- big_tech_stock_prices_cleaned %>%
+  group_by(stock_symbol) %>%
+  summarise(market_cap = mean(close) * sum(volume)) %>%
+  arrange(desc(market_cap)) %>%
+  slice_head(n = 5)
+
+# Filter data for the top 5 companies
+selected_tickers <- top_5_market_cap$stock_symbol
+selected_data <- big_tech_stock_prices_cleaned %>%
+  filter(stock_symbol %in% selected_tickers)
+```
+
+Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son **`r top_5_market_cap$stock_symbol`**. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Create a trend plot for stock prices
+ggplot(selected_data, aes(x = date, y = close, color = stock_symbol)) +
+  geom_point(size = 0.5) +
+  labs(title = "Figura 2. Las 5 Big Tech de mayor capitalización",
+       x = "Fecha (años)",
+       y = "Precio de Cierre (u$s)",
+       color = "Compañías") +
+  theme_minimal() +
+  theme(legend.text = element_text(size = 10),
+        legend.position = "bottom",
+        plot.title = element_text(size = 16, hjust = 0.5))
+```
+
+Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de *"drawdown"* que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo *"drawdown"* para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Calculate drawdowns for selected companies
+for_drawdown <- select(selected_data, stock_symbol, date, close)
+for_drawdown_xts_list <- for_drawdown %>%
+  group_by(stock_symbol) %>%
+  arrange(stock_symbol, date) %>%
+  group_map(~ xts(.x$close, order.by = .x$date), .keep = TRUE)
+
+# Plot drawdowns for each company
+drawdown_plots <- lapply(seq_along(drawdowns_list), function(i) {
+  plot_drawdown(drawdowns_list[[i]], names(drawdowns_list)[i])
+})
+
+# Arrange drawdown plots in a grid
+grid.arrange(grobs = drawdown_plots, ncol = 2)
+
+```
+
+En la Tabla 1, se presentan los porcentajes de caída máxima para cada símbolo en todo el período de tiempo evaluado, ofreciendo una visión cuantitativa de las pérdidas más significativas experimentadas por las compañías seleccionadas. Este dato es esencial para comprender la magnitud y el impacto en su valoración.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Create a table with maximum drawdown percentages
+drawdown_table <- lapply(seq_along(drawdowns_list), function(i) {
+  data.frame(Symbol = names(drawdowns_list)[i], MaxDrawdown = min(drawdowns_list[[i]]))
+})
+
+# Combine the list into a single data frame
+drawdown_df <- do.call(rbind, drawdown_table)
+
+# Order the table by MaxDrawdown in descending order
+drawdown_df <- drawdown_df[order(drawdown_df$MaxDrawdown), ]
+
+# Print the drawdown table
+kable(drawdown_df, caption = "Tabla 1. Porcentajes de caída máxima")
+
+```
+
+Por ejemplo, `r drawdown_df$Simbolo[1]` experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante `r drawdown_df$MaxCaida[1]`%, llevándose el puesto `r which.min(drawdown_df$MaxCaida)`. Luego, `r drawdown_df$Simbolo[2]` con una caída máxima de `r drawdown_df$MaxCaida[2]`% en el lugar `r which.min(drawdown_df$MaxCaida)+1`, le sigue `r drawdown_df$Simbolo[3]` con `r drawdown_df$MaxCaida[3]`%, `r drawdown_df$Simbolo[4]` con `r drawdown_df$MaxCaida[4]`%, y finalmente `r drawdown_df$Simbolo[5]` con un `r drawdown_df$MaxCaida[5]`%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice **S&P 500**. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice [\[1\]](#bloomberg) [\[2\]](#SP500) [\[3\]](#financial-times), por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del **S&P 500** en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el **BTC**, petróleo **WTI** y **BRENT**, el índice **NASDAQ** y el **ORO**. Más allá del peso de estas compañías en el índice S&P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Read ticker prices data
+big_tech_stock_prices <- readRDS(here::here("data", "big_tech_stock_prices_cleaned.RDS"))
+
+# Filter data only for the 5 selected companies
+selected_tickers <- c("AAPL", "AMZN", "META", "MSFT", "TSLA")
+correlation_data <- big_tech_stock_prices %>%
+  filter(stock_symbol %in% selected_tickers) %>%
+  select(stock_symbol, date, close) %>%
+  group_by(date, stock_symbol) %>%
+  drop_na()
+
+# Create a wide data frame
+correlation_matrix <- correlation_data %>%
+  pivot_wider(names_from = stock_symbol,
+              values_from = close) %>%
+  drop_na()
+
+correlation_matrix <- correlation_matrix[, -1]
+
+# Calculate the correlation matrix
+correlation_m <- cor(correlation_matrix)
+
+# Create a correlation plot
+# correlation_plot <- corrplot(correlation_m,
+#                              method = "circle",
+#                              type = "upper",
+#                              tl.col = "black",
+#                              tl.srt = 45)
+
+# Create a table object with correlation statistics
+correlation_stats <- data.frame(
+  Mean = apply(correlation_matrix, 2, mean, na.rm = TRUE),
+  SD = apply(correlation_matrix, 2, sd, na.rm = TRUE),
+  Min = apply(correlation_matrix, 2, min, na.rm = TRUE),
+  Max = apply(correlation_matrix, 2, max, na.rm = TRUE)
+)
+
+# Show the table in the document
+# kable(correlation_stats, "html") %>%
+#   kable_styling(full_width = FALSE, bootstrap_options = "striped", font_size = 10)
+
+# Get dates from the original matrix
+dates <- correlation_data %>%
+  select(date) %>%
+  distinct()
+
+# Check if lengths are equal and adjust if necessary
+if (nrow(correlation_matrix) != nrow(dates)) {
+  warning("Adjusting the length of dates to match the correlation matrix.")
+  dates <- head(dates, nrow(correlation_matrix))
+}
+
+# Add the date column to the correlation matrix
+correlation_matrix <- bind_cols(dates, correlation_matrix)
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+stock_data <- new.env()
+# Define the tickers so we formulate what we need
+tickers <- c("BTC-USD",
+             "GC=F",
+             "CL=F",
+             "BZ=F",
+             "^IXIC",
+             "^GSPC")
+
+getSymbols(
+  tickers,
+  src = 'yahoo',
+  env = stock_data,
+  from = as.Date("2010-01-01"),
+  to = as.Date("2023-07-30"),
+  periodicity = 'daily'
+)
+
+# Read additional data
+btc_data <- stock_data$`BTC-USD`
+gold_data <- stock_data$`GC=F`
+wti_data <- stock_data$`CL=F`
+brent_data <- stock_data$`BZ=F`
+nasdaq_data <- stock_data$IXIC
+sp500_data <- stock_data$GSPC
+
+btc_data_df <- as.data.frame(btc_data)
+gold_data_df <- as.data.frame(gold_data)
+wti_data_df <- as.data.frame(wti_data)
+brent_data_df <- as.data.frame(brent_data)
+nasdaq_data_df <- as.data.frame(nasdaq_data)
+sp500_data_df <- as.data.frame(sp500_data)
+
+btc_data_close <- btc_data_df %>%
+  select('BTC-USD.Close') %>%
+  drop_na()
+gold_data_close <- gold_data_df %>%
+  select('GC=F.Close') %>%
+  drop_na()
+wti_data_close <- wti_data_df %>%
+  select('CL=F.Close') %>%
+  drop_na()
+brent_data_close <- brent_data_df %>%
+  select('BZ=F.Close') %>%
+  drop_na()
+nasdaq_data_close <- nasdaq_data_df %>%
+  select('IXIC.Close') %>%
+  drop_na()
+sp500_data_close <- sp500_data_df %>%
+  select('GSPC.Close') %>%
+  drop_na()
+
+# Extract dates from btc_data
+btc_dates <- index(btc_data)
+
+# Convert dates to a common format
+correlation_data$date <- as.Date(correlation_data$date)
+btc_dates <- as.Date(btc_dates)
+
+# Get common dates for each data set
+common_dates_btc <- as.Date(rownames(btc_data_close))
+common_dates_gold <- as.Date(rownames(gold_data_close))
+common_dates_wti <- as.Date(rownames(wti_data_close))
+common_dates_brent <- as.Date(rownames(brent_data_close))
+common_dates_nasdaq <- as.Date(rownames(nasdaq_data_close))
+common_dates_sp500 <- as.Date(rownames(sp500_data_close))
+
+# Find common dates across all data sets
+common_dates <- Reduce(intersect, list(common_dates_btc, common_dates_gold, common_dates_wti, common_dates_brent, common_dates_nasdaq, common_dates_sp500, correlation_matrix$date))
+
+# Filter data for common dates
+common_dates <- as.Date(common_dates)
+
+# Filter and add columns for each data set
+btc_data_close <- 
+  data.frame(date = common_dates,
+             BTC = btc_data_close[rownames(btc_data_close) %in%
+                                                    common_dates, ])
+gold_data_close <-
+  data.frame(date = common_dates,
+             GOLD = gold_data_close[rownames(gold_data_close) %in%
+                                                       common_dates, ])
+wti_data_close <-
+  data.frame(date = common_dates,
+             WTI = wti_data_close[rownames(wti_data_close) %in%
+                                                    common_dates, ])
+brent_data_close <-
+  data.frame(date = common_dates,
+             BRENT = brent_data_close[rownames(brent_data_close) %in%
+                                                          common_dates, ])
+nasdaq_data_close <-
+  data.frame(date = common_dates,
+             NASDAQ = nasdaq_data_close[rownames(nasdaq_data_close) %in%
+                                                             common_dates, ])
+sp500_data_close <-
+  data.frame(date = common_dates,
+             SP500 = sp500_data_close[rownames(sp500_data_close) %in%
+                                                          common_dates, ])
+
+
+# Example for BTC
+correlation_matrix <- correlation_matrix[correlation_matrix$date %in% common_dates, ]
+
+# Merge with the correlation matrix
+correlation_matrix <- merge(correlation_matrix, btc_data_close, by = "date", all = TRUE)
+correlation_matrix <- merge(correlation_matrix, gold_data_close, by = "date", all = TRUE)
+correlation_matrix <- merge(correlation_matrix, wti_data_close, by = "date", all = TRUE)
+correlation_matrix <- merge(correlation_matrix, brent_data_close, by = "date", all = TRUE)
+correlation_matrix <- merge(correlation_matrix, nasdaq_data_close, by = "date", all = TRUE)
+correlation_matrix <- merge(correlation_matrix, sp500_data_close, by = "date", all = TRUE)
+
+# Remove date column from correlation_matrix
+correlation_matrix <- correlation_matrix[, -1]
+
+# Remove tickers labels column from correlation_matrix
+correlation_matrix <- correlation_matrix[, -1]
+
+# Calculate new correlation matrix
+correlation_m <- cor(correlation_matrix)
+
+# mat : is a matrix of data
+# ... : further arguments to pass to the native R cor.test function
+cor.mtest <- function(mat, ...) {
+    mat <- as.matrix(mat)
+    n <- ncol(mat)
+    p.mat<- matrix(NA, n, n)
+    diag(p.mat) <- 0
+    for (i in 1:(n - 1)) {
+        for (j in (i + 1):n) {
+            tmp <- cor.test(mat[, i], mat[, j], ...)
+            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+        }
+    }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+# matrix of the p-value of the correlation
+p.mat <- cor.mtest(correlation_m)
+
+# Specialized the insignificant value according to the significant level
+corrplot(correlation_m,
+         type="upper",
+         order="hclust",
+         # pvalues
+         p.mat = p.mat,
+         # coeficients
+         addCoef.col = "white", number.digits = 2, number.cex = 0.75,
+         sig.level = 0.01,
+         # hide correlation coefficient on the principal diagonal
+         diag=FALSE )
+```
+
+Se puede observar en la matriz de correlación que los crudos, WTI y Brent, tienen una correlación fuerte entre sí, pero no con el resto. Los resultados de Meta no son buenos, por lo que no deberían tenerse en cuenta; lo mismo ocurre con Amazón respecto a la mayoría, pero muestra correlación fuerte con Tesla, Apple y Microsoft. El índice S&P 500 tiene correlación fuertísima con el resto, respecto a las compañías que estamos mirando se puede decir con todas, pero con Meta y Amazon los p-valores no son concluyentes, que es lo que indica la cruz. Una forma de profundizar el análisis sería con modelos de regresión o comparándo contra índices específicos.
+
+## Conclusiones
+
+Hemos visto tanto la magnitud de la depreciación de las acciones de las compañías tecnológicas más importantes que cotizan en la bolsa estadounidense como la correlación fuerte que tienen en el índice SP500. Se intentó evaluar la correlación de éstas con distintos activos financieros, que son una referencia de actividad y salud de una economía. Se pudo determinar una correlación fuerte entre las compañías evaluadas **Tesla, Apple, Microsoft y Amazon**, excepto por **Meta** que los resultados no son concluyentes. Respecto al resto de activos seleccionados solo se puede asegurar que presentan correlación con el índice **S&P 500**. Es necesario utilizar otras herramientas que ayuden a profundizar el análisis.
+
+## Referencias
+
+1.  Bloomberg. "Tech Titans' Dominance in S&P 500: An Analysis of Market Impact." [https://www.bloomberg.com](#bloomberg).
+2.  S&P Dow Jones Indices. "S&P 500 Composition and Impact of Leading Tech Companies." [https://us.spindices.com/](#sp500).
+3.  Financial Times. "The Influence of Big Tech on S&P 500 Performance." [https://www.ft.com](#financial-times).

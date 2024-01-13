@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Análisis de Precios de Acciones Big Tech</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="paper_files/libs/clipboard/clipboard.min.js"></script>
+<script src="paper_files/libs/quarto-html/quarto.js"></script>
+<script src="paper_files/libs/quarto-html/popper.min.js"></script>
+<script src="paper_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="paper_files/libs/quarto-html/anchor.min.js"></script>
+<link href="paper_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="paper_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="paper_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="paper_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="paper_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis de Precios de Acciones Big Tech</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="resumen" class="level2">
+<h2 class="anchored" data-anchor-id="resumen">Resumen</h2>
+<p>En este análisis, se examinan las tendencias de precios de las cinco principales compañías tecnológicas de mayor capitalización bursátil: Apple (AAPL), Amazon (AMZN), Meta (META), Microsoft (MSFT) y Tesla (TSLA). Además, se evalúa la correlación de estos movimientos con el índice SP500 y otros activos relevantes como BTC, petróleo WTI y BRENT, índice NASDAQ y oro. Se presentan conclusiones preliminares sobre la magnitud de las depreciaciones y la correlación entre las acciones de las compañías seleccionadas y otros activos.</p>
+</section>
+<section id="precios" class="level2">
+<h2 class="anchored" data-anchor-id="precios">Precios</h2>
+<p>En los últimos años las grandes empresas tecnológicas que cotizan en bolsa han visto bajas considerables en los precios de sus acciones, resulta interesante profundizar en este tema. Para esto se han descargado los datos de los precios de las 14 compañías tecnológicas más importantes que cotizan en la bolsa de EEUU. Una de las preguntas que podríamos intentar responder es de cuánto ha sido la magnitud de las depreciaciones. Para ello, se han examinado las tendencias de precios de las cinco principales y más importantes. Se tuvieron en cuenta solo aquellas compañías que tienen una mayor capitalización bursátil y que, a priori, se pueden vizualizar estos retrocesos significativos en los gráficos de precios para hacer el análisis más sencillo; en la <strong>Figura 1</strong> y <strong>Figura 2</strong> se puede apreciar lo comentado.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="paper_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son <strong>AAPL, TSLA, AMZN, MSFT, META</strong>. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="paper_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de <em>“drawdown”</em> que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo <em>“drawdown”</em> para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="paper_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En la Tabla 1, se presentan los porcentajes de caída máxima para cada símbolo en todo el período de tiempo evaluado, ofreciendo una visión cuantitativa de las pérdidas más significativas experimentadas por las compañías seleccionadas. Este dato es esencial para comprender la magnitud y el impacto en su valoración.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Tabla 1. Porcentajes de caída máxima</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Simbolo</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MaxCaida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">META</td>
+<td style="text-align: right;">-76.73609</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">TSLA</td>
+<td style="text-align: right;">-73.38830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">AMZN</td>
+<td style="text-align: right;">-56.14526</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">AAPL</td>
+<td style="text-align: right;">-44.37687</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">MSFT</td>
+<td style="text-align: right;">-37.55647</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Por ejemplo, META experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante -76.7360915%, llevándose el puesto 1. Luego, TSLA con una caída máxima de -73.3882973% en el lugar 2, le sigue AMZN con -56.1452632%, AAPL con -44.3768716%, y finalmente MSFT con un -37.556466%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice <strong>S&amp;P 500</strong>. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice <a href="#bloomberg">[1]</a> <a href="#SP500">[2]</a> <a href="#financial-times">[3]</a>, por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del <strong>S&amp;P 500</strong> en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el <strong>BTC</strong>, petróleo <strong>WTI</strong> y <strong>BRENT</strong>, el índice <strong>NASDAQ</strong> y el <strong>ORO</strong>. Más allá del peso de estas compañías en el índice S&amp;P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "BTC-USD" "GC=F"    "CL=F"    "BZ=F"    "IXIC"    "GSPC"   </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="paper_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Se puede observar en la matriz de correlación que los crudos, WTI y Brent, tienen una correlación fuerte entre sí, pero no con el resto. Los resultados de Meta no son buenos, por lo que no deberían tenerse en cuenta; lo mismo ocurre con Amazón respecto a la mayoría, pero muestra correlación fuerte con Tesla, Apple y Microsoft. El índice S&amp;P 500 tiene correlación fuertísima con el resto, respecto a las compañías que estamos mirando se puede decir con todas, pero con Meta y Amazon los p-valores no son concluyentes, que es lo que indica la cruz. Una forma de profundizar el análisis sería con modelos de regresión o comparándo contra índices específicos.</p>
+</section>
+<section id="conclusiones" class="level2">
+<h2 class="anchored" data-anchor-id="conclusiones">Conclusiones</h2>
+<p>Hemos visto tanto la magnitud de la depreciación de las acciones de las compañías tecnológicas más importantes que cotizan en la bolsa estadounidense como la correlación fuerte que tienen en el índice SP500. Se intentó evaluar la correlación de éstas con distintos activos financieros, que son una referencia de actividad y salud de una economía. Se pudo determinar una correlación fuerte entre las compañías evaluadas <strong>Tesla, Apple, Microsoft y Amazon</strong>, excepto por <strong>Meta</strong> que los resultados no son concluyentes. Respecto al resto de activos seleccionados solo se puede asegurar que presentan correlación con el índice <strong>S&amp;P 500</strong>. Es necesario utilizar otras herramientas que ayuden a profundizar el análisis.</p>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ol type="1">
+<li>Bloomberg. “Tech Titans’ Dominance in S&amp;P 500: An Analysis of Market Impact.” <a href="#bloomberg">https://www.bloomberg.com</a>.</li>
+<li>S&amp;P Dow Jones Indices. “S&amp;P 500 Composition and Impact of Leading Tech Companies.” <a href="#sp500">https://us.spindices.com/</a>.</li>
+<li>Financial Times. “The Influence of Big Tech on S&amp;P 500 Performance.” <a href="#financial-times">https://www.ft.com</a>.</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

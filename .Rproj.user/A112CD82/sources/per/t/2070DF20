@@ -1,0 +1,26 @@
+{
+    "id": "2070DF20",
+    "path": "~/projects/rchallange/core/temporary_db.R",
+    "project_path": "core/temporary_db.R",
+    "type": "r_source",
+    "hash": "213912924",
+    "contents": "",
+    "dirty": true,
+    "created": 1705074087191.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "65,0",
+        "scrollLine": "40"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1705076605,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1705125076176,
+    "read_only": false,
+    "read_only_alternatives": []
+}

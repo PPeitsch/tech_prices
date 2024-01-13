@@ -1,0 +1,32 @@
+{
+    "id": "26B0E07B",
+    "path": "~/projects/rchallange/doc/technical.qmd",
+    "project_path": "doc/technical.qmd",
+    "type": "quarto_markdown",
+    "hash": "3982433820",
+    "contents": "",
+    "dirty": false,
+    "created": 1705072218660.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "cursorPosition": "12,386",
+        "scrollLine": "26",
+        "rmdVisualModeLocation": "2:0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1705075558,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1705125421154,
+    "read_only": false,
+    "read_only_alternatives": []
+}
