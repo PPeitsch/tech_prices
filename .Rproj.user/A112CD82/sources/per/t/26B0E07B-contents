@@ -13,6 +13,7 @@ En este análisis, se examinan las tendencias de precios de las cinco principale
 En los últimos años las grandes empresas tecnológicas que cotizan en bolsa han visto bajas considerables en los precios de sus acciones, resulta interesante profundizar en este tema. Para esto se han descargado los datos de los precios de las 14 compañías tecnológicas más importantes que cotizan en la bolsa de EEUU. Una de las preguntas que podríamos intentar responder es de cuánto ha sido la magnitud de las depreciaciones. Para ello, se han examinado las tendencias de precios de las cinco principales y más importantes. Se tuvieron en cuenta solo aquellas compañías que tienen una mayor capitalización bursátil y que, a priori, se pueden vizualizar estos retrocesos significativos en los gráficos de precios para hacer el análisis más sencillo; en la **Figura 1** y **Figura 2** se puede apreciar lo comentado.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Chunk 1
 # Load required libraries
 library(tidyr)
 library(dplyr)
@@ -28,9 +29,8 @@ library(quantmod)
 
 # Read cleaned stock prices data
 big_tech_stock_prices_cleaned <- readRDS(here::here("data", "big_tech_stock_prices_cleaned.RDS"))
-
 # Read market capitalization data
-market_cap_df <- readRDS(here::here("data", "market_cap_df.RDS"))
+market_cap_df <- readRDS(here::here("data", "query_market_cap_result.RDS"))
 
 # Create a stacked area plot for market capitalization
 ggplot(market_cap_df, aes(x = reorder(stock_symbol, -market_cap), y = market_cap, fill = stock_symbol)) +
@@ -46,25 +46,21 @@ ggplot(market_cap_df, aes(x = reorder(stock_symbol, -market_cap), y = market_cap
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-# Select the top 5 companies by market capitalization
-top_5_market_cap <- big_tech_stock_prices_cleaned %>%
-  group_by(stock_symbol) %>%
-  summarise(market_cap = mean(close) * sum(volume)) %>%
-  arrange(desc(market_cap)) %>%
-  slice_head(n = 5)
+# Chunk 2
+# Read market filtered data
+selected_data <- readRDS(here::here("data", "selected_data.RDS"))
 
-# Filter data for the top 5 companies
-selected_tickers <- top_5_market_cap$stock_symbol
-selected_data <- big_tech_stock_prices_cleaned %>%
-  filter(stock_symbol %in% selected_tickers)
+# Get companies tickers
+selected_tickers <- c("AAPL", "AMZN", "META", "MSFT", "TSLA")
+
 ```
 
-Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son **`r top_5_market_cap$stock_symbol`**. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.
+Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son **`r unique(arrange(selected_data, desc(market_cap))$stock_symbol)`**. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-
+# Chunk 3
 # Create a trend plot for stock prices
-ggplot(selected_data, aes(x = date, y = close, color = stock_symbol)) +
+ggplot(selected_data, aes(x = as.Date(date), y = close, color = stock_symbol)) +
   geom_point(size = 0.5) +
   labs(title = "Figura 2. Las 5 Big Tech de mayor capitalización",
        x = "Fecha (años)",
@@ -76,22 +72,51 @@ ggplot(selected_data, aes(x = date, y = close, color = stock_symbol)) +
         plot.title = element_text(size = 16, hjust = 0.5))
 ```
 
-Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de *"drawdown"* que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo *"drawdown"* para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.
+Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de *"draw down"* que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo *"draw down"* para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Chunk 4
+# Read drawdowns data
+drawdowns_result <- readRDS(here::here("data", "drawdowns_result.RDS"))
+
 # Calculate drawdowns for selected companies
-for_drawdown <- select(selected_data, stock_symbol, date, close)
+for_drawdown <- mutate(drawdowns_result, date = as.Date(date))
+
 for_drawdown_xts_list <- for_drawdown %>%
   group_by(stock_symbol) %>%
-  arrange(stock_symbol, date) %>%
+  arrange(stock_symbol) %>%
+  na.omit() %>%
   group_map(~ xts(.x$close, order.by = .x$date), .keep = TRUE)
 
-# Plot drawdowns for each company
+# Assign symbols' names to the xts list
+names(for_drawdown_xts_list) <- unique(for_drawdown$stock_symbol)
+
+# Function to calculate drawdown
+calculate_drawdown <- function(xts_data) {
+  max_val <- cummax(xts_data)
+  drawdown <- (xts_data - max_val) / max_val * 100
+  return(drawdown)
+}
+
+# Apply the function to each element of the list
+drawdowns_list <- map(for_drawdown_xts_list, calculate_drawdown)
+
+# Function to plot drawdown
+plot_drawdown <- function(drawdown_data, symbol) {
+  ggplot(data = drawdown_data, aes(x = index(drawdown_data), y = drawdown_data[, 1])) +
+    geom_line() +
+    labs(title = paste("Drawdown of", symbol),
+         x = "Date",
+         y = "% Fall") +
+    theme_minimal()
+}
+
+# Create a list of plots
 drawdown_plots <- lapply(seq_along(drawdowns_list), function(i) {
   plot_drawdown(drawdowns_list[[i]], names(drawdowns_list)[i])
 })
 
-# Arrange drawdown plots in a grid
+# Plot drawdowns in a grid
 grid.arrange(grobs = drawdown_plots, ncol = 2)
 
 ```
@@ -99,8 +124,8 @@ grid.arrange(grobs = drawdown_plots, ncol = 2)
 En la Tabla 1, se presentan los porcentajes de caída máxima para cada símbolo en todo el período de tiempo evaluado, ofreciendo una visión cuantitativa de las pérdidas más significativas experimentadas por las compañías seleccionadas. Este dato es esencial para comprender la magnitud y el impacto en su valoración.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-
-# Create a table with maximum drawdown percentages
+# Chunk 5
+# Create a table with maximum draw down percentages
 drawdown_table <- lapply(seq_along(drawdowns_list), function(i) {
   data.frame(Symbol = names(drawdowns_list)[i], MaxDrawdown = min(drawdowns_list[[i]]))
 })
@@ -108,23 +133,22 @@ drawdown_table <- lapply(seq_along(drawdowns_list), function(i) {
 # Combine the list into a single data frame
 drawdown_df <- do.call(rbind, drawdown_table)
 
-# Order the table by MaxDrawdown in descending order
+# Order the table by max draw down in descending order
 drawdown_df <- drawdown_df[order(drawdown_df$MaxDrawdown), ]
 
-# Print the drawdown table
+# Print the draw down table
 kable(drawdown_df, caption = "Tabla 1. Porcentajes de caída máxima")
 
 ```
 
-Por ejemplo, `r drawdown_df$Simbolo[1]` experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante `r drawdown_df$MaxCaida[1]`%, llevándose el puesto `r which.min(drawdown_df$MaxCaida)`. Luego, `r drawdown_df$Simbolo[2]` con una caída máxima de `r drawdown_df$MaxCaida[2]`% en el lugar `r which.min(drawdown_df$MaxCaida)+1`, le sigue `r drawdown_df$Simbolo[3]` con `r drawdown_df$MaxCaida[3]`%, `r drawdown_df$Simbolo[4]` con `r drawdown_df$MaxCaida[4]`%, y finalmente `r drawdown_df$Simbolo[5]` con un `r drawdown_df$MaxCaida[5]`%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice **S&P 500**. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice [\[1\]](#bloomberg) [\[2\]](#SP500) [\[3\]](#financial-times), por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del **S&P 500** en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el **BTC**, petróleo **WTI** y **BRENT**, el índice **NASDAQ** y el **ORO**. Más allá del peso de estas compañías en el índice S&P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.
+Por ejemplo, `r drawdown_df$Simbolo[1]` experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante `r drawdown_df$MaxDrawdown[1]`%, llevándose el puesto `r which.min(drawdown_df$MaxDrawdown)`. Luego, `r drawdown_df$Simbolo[2]` con una caída máxima de `r drawdown_df$MaxDrawdown[2]`% en el lugar `r which.min(drawdown_df$MaxDrawdown)+1`, le sigue `r drawdown_df$Simbolo[3]` con `r drawdown_df$MaxDrawdown[3]`%, `r drawdown_df$Simbolo[4]` con `r drawdown_df$MaxDrawdown[4]`%, y finalmente `r drawdown_df$Simbolo[5]` con un `r drawdown_df$MaxDrawdown[5]`%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice **S&P 500**. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice [\[1\]](#bloomberg) [\[2\]](#SP500) [\[3\]](#financial-times), por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del **S&P 500** en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el **BTC**, petróleo **WTI** y **BRENT**, el índice **NASDAQ** y el **ORO**. Más allá del peso de estas compañías en el índice S&P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-
+# Chunk 6
 # Read ticker prices data
 big_tech_stock_prices <- readRDS(here::here("data", "big_tech_stock_prices_cleaned.RDS"))
 
 # Filter data only for the 5 selected companies
-selected_tickers <- c("AAPL", "AMZN", "META", "MSFT", "TSLA")
 correlation_data <- big_tech_stock_prices %>%
   filter(stock_symbol %in% selected_tickers) %>%
   select(stock_symbol, date, close) %>%
@@ -178,6 +202,7 @@ correlation_matrix <- bind_cols(dates, correlation_matrix)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Chunk 7
 stock_data <- new.env()
 # Define the tickers so we formulate what we need
 tickers <- c("BTC-USD",

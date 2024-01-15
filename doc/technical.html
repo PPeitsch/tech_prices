@@ -72,13 +72,13 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="technical_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son <strong>AAPL, TSLA, AMZN, MSFT, META</strong>. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.</p>
+<p>Como se puede ver en la gráfica superior, las primeras 5 de mayor capitalización bursátil son <strong>TSLA, META, AAPL, AMZN, MSFT</strong>. Estos datos proporcionan una visión detallada de la evolución de los precios de cierre a lo largo del tiempo. Se aprecia una caída significativa en los precios de varias de estas compañías en la Figura 2, lo que nos conduce a una exploración un poco más detallada de los datos para evaluar la magnitud de las caídas.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="technical_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de <em>“drawdown”</em> que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo <em>“drawdown”</em> para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.</p>
+<p>Una forma de ver la magnitud de la depreciación de las acciones, así como cuánto duran, es mediante los gráficos de <em>“draw down”</em> que nos permiten identificar también los períodos en los cuales ocurren las mayores caídas. En la Figura 3, se muestra el conjunto de gráficos tipo <em>“draw down”</em> para cada una de estas 5 compañías. Se puede destacar que las caídas se dan en intervalos de tiempo prolongados, algunos meses por lo general, al igual que se puede notar que la intensidad es considerable. Esto proporciona información valiosa como antecedente y para consideraciones a futuro. Este tipo de gráficos puede mostrar las disminuciones más significativas desde los máximos históricos alcanzados en los precios de las acciones de cada compañía hasta los mínimos locales consecuentes, pero también nos muestra, al menos de forma visual, que tienen cierta correlación. Esto último lo podemos ver marcadamente al final del gráfico donde todas ven caer su precio ampliamente.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="technical_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
@@ -92,8 +92,8 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Simbolo</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">MaxCaida</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Symbol</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MaxDrawdown</th>
 </tr>
 </thead>
 <tbody>
@@ -128,15 +128,13 @@ ul.task-list li input[type="checkbox"] {
 
 </div>
 </div>
-<p>Por ejemplo, META experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante -76.7360915%, llevándose el puesto 1. Luego, TSLA con una caída máxima de -73.3882973% en el lugar 2, le sigue AMZN con -56.1452632%, AAPL con -44.3768716%, y finalmente MSFT con un -37.556466%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice <strong>S&amp;P 500</strong>. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice <a href="#bloomberg">[1]</a> <a href="#SP500">[2]</a> <a href="#financial-times">[3]</a>, por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del <strong>S&amp;P 500</strong> en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el <strong>BTC</strong>, petróleo <strong>WTI</strong> y <strong>BRENT</strong>, el índice <strong>NASDAQ</strong> y el <strong>ORO</strong>. Más allá del peso de estas compañías en el índice S&amp;P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.</p>
+<p>Por ejemplo, experimentó una caída máxima significativamente más pronunciada en comparación con el resto, llegando a un impresionante -76.7360915%, llevándose el puesto 1. Luego, con una caída máxima de -73.3882973% en el lugar 2, le sigue con -56.1452632%, con -44.3768716%, y finalmente con un -37.556466%. Ahora que se han visto los niveles de caída, otra pregunta que podríamos intentar responder es cómo afecta estás caídas al índice <strong>S&amp;P 500</strong>. Es bien conocido el peso que tienen estas 5 compañías dentro del SP500 y algunos analistas aseguran que son las que condicionan el precio del índice <a href="#bloomberg">[1]</a> <a href="#SP500">[2]</a> <a href="#financial-times">[3]</a>, por lo que probablemente veamos una correlación fuerte, pero veamos que sucede respecto a otros activos también y la correlación que tienen los precios de estas 5 acciones entre sí. Tomemos, entonces, el precio del <strong>S&amp;P 500</strong> en el intervalo evaluado y los precios de algunos otros activos que tienen un peso importante en la economía EEUU y global, como el <strong>BTC</strong>, petróleo <strong>WTI</strong> y <strong>BRENT</strong>, el índice <strong>NASDAQ</strong> y el <strong>ORO</strong>. Más allá del peso de estas compañías en el índice S&amp;P 500, hay que aclarar que la correlación no implica causalidad por lo que el hecho que el precio de uno esté cayendo no implica que el otro activo caiga también y viceversa, pero nos da una idea general.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "BTC-USD" "GC=F"    "CL=F"    "BZ=F"    "IXIC"    "GSPC"   </code></pre>
 </div>
-</div>
-<div class="cell">
 <div class="cell-output-display">
-<p><img src="technical_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="technical_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Se puede observar en la matriz de correlación que los crudos, WTI y Brent, tienen una correlación fuerte entre sí, pero no con el resto. Los resultados de Meta no son buenos, por lo que no deberían tenerse en cuenta; lo mismo ocurre con Amazón respecto a la mayoría, pero muestra correlación fuerte con Tesla, Apple y Microsoft. El índice S&amp;P 500 tiene correlación fuertísima con el resto, respecto a las compañías que estamos mirando se puede decir con todas, pero con Meta y Amazon los p-valores no son concluyentes, que es lo que indica la cruz. Una forma de profundizar el análisis sería con modelos de regresión o comparándo contra índices específicos.</p>

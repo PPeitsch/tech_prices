@@ -30,15 +30,19 @@ Las acciones de las grandes tecnológicas muestran una tendencia aparente de ca�
 
 ## Estructura del repositorio
 
--   **ppt:** El análisis será presentado en formato de presentación utilizando Quarto con Reveal.js.
--   **doc:** Se incluirá un documento técnico en formato PDF.
--   **data:** Directorio donde se almacenan los datos originales.
+-   **ppt:** 
+-   **doc:** El análisis será presentado en formato de documento técnico utilizando Quarto con Reveal.js, se incluirá una versión en formato PDF.
+-   **data:** Directorio donde se almacenan los datos originales y las tablas generadas.
 -   **core:** Directorio donde se ocupa el código utilizado para el análisis.
 -   **img:** Se reserva un directorio para imágenes en caso de necesitar.
 
 ## Requisitos
 
-Asegúrese de tener R y las bibliotecas necesarias instaladas. Consulte el archivo `core/requirements.txt` para mayor detalle.
+Asegúrese de tener R y las bibliotecas necesarias instaladas. Consulte el archivo `renv.lock` para mayor detalle.
+
+## Pendiente
+
+Los siguientes bloques de códigos ("chunks") están pendientes de mejora: chunk 6 y 7
 
 ------------------------------------------------------------------------
 

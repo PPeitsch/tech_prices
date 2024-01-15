@@ -79,7 +79,6 @@ saveRDS(volume_result, here::here("data", "volume_result.RDS"))
 
 # Calculate market capitalization in SQL
 query_market_cap <- "
-  CREATE TEMPORARY TABLE market_cap_temp AS
   SELECT
       stock_symbol,
       date,
@@ -92,13 +91,67 @@ query_market_cap <- "
       market_cap;
 "
 
-DBI::dbExecute(con, query_market_cap)
+query_market_cap_result <- DBI::dbGetQuery(con, query_market_cap)
+saveRDS(query_market_cap_result, here::here("data", "query_market_cap_result.RDS"))
 
-# Select the results from the temporary table
-market_cap_df <- DBI::dbGetQuery(con, "SELECT * FROM market_cap_temp")
+# Filter data for the top 5 companies in SQL and calculate market_cap
+query_selected_data <- "
+  SELECT
+    *
+  FROM (
+    SELECT
+      *,
+      AVG(close) * SUM(volume) AS market_cap
+    FROM
+      big_tech_stock_prices
+    WHERE
+      stock_symbol IN (
+        SELECT
+          stock_symbol
+        FROM
+          big_tech_stock_prices
+        GROUP BY
+          stock_symbol
+        ORDER BY
+          AVG(close) * SUM(volume) DESC
+        LIMIT 5
+      )
+    GROUP BY
+      stock_symbol, Date, Open, High, Low, Close, Adj_Close, Volume
+  )
+  ORDER BY
+    market_cap DESC;
+"
 
-# Save market_cap_df as an RDS file
-saveRDS(market_cap_df, here::here("data", "market_cap_df.RDS"))
+selected_data <- DBI::dbGetQuery(con, query_selected_data)
+saveRDS(selected_data, here::here("data", "selected_data.RDS"))
+
+# Calculate drawdowns for selected companies in SQL
+query_drawdowns <- "
+  SELECT
+    stock_symbol,
+    date,
+    close,
+    1 - close / LAG(close) OVER (PARTITION BY stock_symbol ORDER BY date) AS drawdown
+  FROM
+    big_tech_stock_prices
+  WHERE
+    stock_symbol IN (
+      SELECT
+        stock_symbol
+      FROM
+        big_tech_stock_prices
+      GROUP BY
+        stock_symbol
+      ORDER BY
+        AVG(close) * SUM(volume) DESC
+      LIMIT 5
+    );
+"
+
+drawdowns_result <- DBI::dbGetQuery(con, query_drawdowns)
+saveRDS(drawdowns_result, here::here("data", "drawdowns_result.RDS"))
+
 
 # Close the database connection
 DBI::dbDisconnect(con)
