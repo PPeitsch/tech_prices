@@ -1,6 +1,0 @@
-"0","# Read market filtered data"
-"0","selected_data <- readRDS(here::here(""data"", ""selected_data.RDS""))"
-"0",""
-"0","# Get companies tickers"
-"0","selected_tickers <- c(""AAPL"", ""AMZN"", ""META"", ""MSFT"", ""TSLA"")"
-"0",""

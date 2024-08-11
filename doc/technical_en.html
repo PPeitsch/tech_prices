@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Big Tech Stock Price Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="technical_files/libs/clipboard/clipboard.min.js"></script>
+<script src="technical_files/libs/quarto-html/quarto.js"></script>
+<script src="technical_files/libs/quarto-html/popper.min.js"></script>
+<script src="technical_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="technical_files/libs/quarto-html/anchor.min.js"></script>
+<link href="technical_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="technical_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="technical_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="technical_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="technical_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Big Tech Stock Price Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>In this analysis, we examine the price trends of the five main technology companies with the largest market capitalization: Apple (AAPL), Amazon (AMZN), Meta (META), Microsoft (MSFT), and Tesla (TSLA). Additionally, we evaluate the correlation of these movements with the S&P 500 index and other relevant assets such as BTC, WTI and Brent oil, NASDAQ index, and gold. Preliminary conclusions are presented on the magnitude of depreciations and the correlation between the stocks of the selected companies and other assets.</p>
+</section>
+<section id="prices" class="level2">
+<h2 class="anchored" data-anchor-id="prices">Prices</h2>
+<p>In recent years, large publicly traded technology companies have seen considerable declines in their stock prices, making it interesting to delve deeper into this topic. For this purpose, price data for the 14 most important technology companies listed on the US stock exchange have been downloaded. One of the questions we could try to answer is how large the magnitude of the depreciations has been. To do this, we have examined the price trends of the five main and most important companies. Only those companies with the largest market capitalization were considered, and which, a priori, show significant declines in the price charts to make the analysis simpler; <strong>Figure 1</strong> and <strong>Figure 2</strong> illustrate this.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="technical_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As can be seen in the upper graph, the top 5 by market capitalization are <strong>TSLA, META, AAPL, AMZN, MSFT</strong>. These data provide a detailed view of the evolution of closing prices over time. A significant drop in the prices of several of these companies can be seen in Figure 2, which leads us to a slightly more detailed exploration of the data to assess the magnitude of the falls.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="technical_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>One way to see the magnitude of stock depreciation, as well as how long they last, is through "drawdown" graphs that also allow us to identify the periods in which the largest drops occur. Figure 3 shows the set of "drawdown" graphs for each of these 5 companies. It can be highlighted that the falls occur over prolonged time intervals, usually several months, and it can also be noted that the intensity is considerable. This provides valuable information as a precedent and for future considerations. This type of graph can show the most significant decreases from the historical highs reached in the stock prices of each company to the consequent local lows, but it also shows us, at least visually, that they have some correlation. We can see this markedly at the end of the graph where all see their price fall widely.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="technical_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Table 1 presents the maximum fall percentages for each symbol over the entire evaluated time period, offering a quantitative view of the most significant losses experienced by the selected companies. This data is essential to understand the magnitude and impact on their valuation.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table 1. Maximum fall percentages</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Symbol</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MaxDrawdown</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">META</td>
+<td style="text-align: right;">-76.73609</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">TSLA</td>
+<td style="text-align: right;">-73.38830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">AMZN</td>
+<td style="text-align: right;">-56.14526</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">AAPL</td>
+<td style="text-align: right;">-44.37687</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">MSFT</td>
+<td style="text-align: right;">-37.55647</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>For example, META experienced a significantly more pronounced maximum fall compared to the rest, reaching an impressive -76.7360915%, taking first place. Then, with a maximum fall of -73.3882973% in second place, followed by AMZN with -56.1452632%, AAPL with -44.3768716%, and finally MSFT with -37.556466%. Now that we have seen the levels of decline, another question we could try to answer is how these falls affect the <strong>S&amp;P 500</strong> index. The weight of these 5 companies within the S&P 500 is well known, and some analysts claim that they are the ones that condition the price of the index <a href="#bloomberg">[1]</a> <a href="#SP500">[2]</a> <a href="#financial-times">[3]</a>, so we will probably see a strong correlation, but let's see what happens with respect to other assets as well and the correlation that the prices of these 5 stocks have among themselves. Let's take, then, the price of the <strong>S&amp;P 500</strong> in the evaluated interval and the prices of some other assets that have an important weight in the US and global economy, such as <strong>BTC</strong>, <strong>WTI</strong> and <strong>BRENT</strong> oil, the <strong>NASDAQ</strong> index and <strong>GOLD</strong>. Beyond the weight of these companies in the S&amp;P 500 index, it should be clarified that correlation does not imply causality, so the fact that the price of one is falling does not imply that the other asset falls as well and vice versa, but it gives us a general idea.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "BTC-USD" "GC=F"    "CL=F"    "BZ=F"    "IXIC"    "GSPC"   </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="technical_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It can be observed in the correlation matrix that crude oils, WTI and Brent, have a strong correlation with each other, but not with the rest. Meta's results are not good, so they should not be taken into account; the same occurs with Amazon with respect to the majority, but it shows strong correlation with Tesla, Apple and Microsoft. The S&amp;P 500 index has a very strong correlation with the rest, with respect to the companies we are looking at, it can be said with all of them, but with Meta and Amazon the p-values are not conclusive, which is what the cross indicates. One way to deepen the analysis would be with regression models or comparing against specific indices.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>We have seen both the magnitude of the depreciation of the stocks of the most important tech companies listed on the US stock exchange and the strong correlation they have with the S&P 500 index. An attempt was made to evaluate their correlation with different financial assets, which are a reference of activity and health of an economy. A strong correlation could be determined among the evaluated companies <strong>Tesla, Apple, Microsoft and Amazon</strong>, except for <strong>Meta</strong> where the results are not conclusive. Regarding the rest of the selected assets, it can only be assured that they show correlation with the <strong>S&amp;P 500</strong> index. It is necessary to use other tools that help deepen the analysis.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li>Bloomberg. "Tech Titans' Dominance in S&amp;P 500: An Analysis of Market Impact." <a href="#bloomberg">https://www.bloomberg.com</a>.</li>
+<li>S&amp;P Dow Jones Indices. "S&amp;P 500 Composition and Impact of Leading Tech Companies." <a href="#sp500">https://us.spindices.com/</a>.</li>
+<li>Financial Times. "The Influence of Big Tech on S&amp;P 500 Performance." <a href="#financial-times">https://www.ft.com</a>.</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    //
