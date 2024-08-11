@@ -1,49 +1,49 @@
-# Análisis de Precios de Acciones Big Tech
+# Big Tech Stock Price Analysis
 
-## Resumen
+## Summary
 
-Este repositorio contiene un análisis de datos sobre los precios diarios de acciones de las 14 compañías tecnológicas más importantes de Estados Unidos. El conjunto de datos se ha obtenido de Yahoo Finance a través de Kaggle, propuestos por Evan Gower. El objetivo de este análisis es demostrar habilidades técnicas en R, abordando información relevante sobre las tendencias de precios de las acciones de las principales empresas tecnológicas.
+This repository contains a data analysis of daily stock prices for the 14 most important technology companies in the United States. The dataset was obtained from Yahoo Finance via Kaggle, proposed by Evan Gower. The objective of this analysis is to demonstrate technical skills in R, addressing relevant information about stock price trends of major technology companies.
 
-## Datos
+## Data
 
--   **Tidy Tuesday dataset:** [Big Tech Stock Prices](https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-02-07/readme.md)
--   **Dataset Original:** [Big Tech Stock Prices](https://www.kaggle.com/datasets/evangower/big-tech-stock-prices)
--   **Información Adicional:** Este conjunto de datos incluye información diaria sobre los precios y volúmenes de acciones de empresas como Apple (AAPL), Amazon (AMZN), Alphabet (GOOGL), Meta Platforms (META), y más.
+- **Tidy Tuesday dataset:** [Big Tech Stock Prices](https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-02-07/readme.md)
+- **Original Dataset:** [Big Tech Stock Prices](https://www.kaggle.com/datasets/evangower/big-tech-stock-prices)
+- **Additional Information:** This dataset includes daily information on stock prices and volumes of companies such as Apple (AAPL), Amazon (AMZN), Alphabet (GOOGL), Meta Platforms (META), and more.
 
-## Contexto
+## Context
 
-Las acciones de las grandes tecnológicas muestran una tendencia aparente de caída significativa durante el período de los datos. La elección de este conjunto de datos está relacionada a empresas que operan en servicios financieros, y se espera que este análisis brinde información relevante sobre las tendencias del mercado tecnológico.
+The stocks of major tech companies show an apparent trend of significant decline during the period of the data. The choice of this dataset is related to companies operating in financial services, and this analysis is expected to provide relevant information about trends in the technology market.
 
-## Objetivos del Análisis
+## Analysis Objectives
 
-1.  **Obtener información relevante**
-    -   Identificar patrones o eventos que podrían haber contribuido a las caídas significativas de precios.
-    -   Analizar la correlación entre las acciones de diferentes empresas tecnológicas.
-2.  **Elección del dataset:**
-    -   Relevancia de las acciones tecnológicas para empresas objetivo.
-    -   La variabilidad o volatilidad en los precios puede ofrecer perspectivas de inversión y riesgo.
+1. **Obtain relevant information**
+   - Identify patterns or events that could have contributed to significant price drops.
+   - Analyze the correlation between stocks of different technology companies.
+2. **Dataset choice:**
+   - Relevance of technology stocks for target companies.
+   - The variability or volatility in prices can offer investment and risk perspectives.
 
-## Herramientas
+## Tools
 
--   Se utilizará R para realizar el análisis, aprovechando las capacidades de RMarkdown y Quarto para la creación de una presentación.
--   Se emplearán consultas SQL a través de la biblioteca DBI para simular operaciones en una base de datos.
+- R will be used to perform the analysis, leveraging the capabilities of RMarkdown and Quarto for creating a presentation.
+- SQL queries will be employed through the DBI library to simulate operations in a database.
 
-## Estructura del repositorio
+## Repository Structure
 
--   **ppt:** 
--   **doc:** El análisis será presentado en formato de documento técnico utilizando Quarto con Reveal.js, se incluirá una versión en formato PDF.
--   **data:** Directorio donde se almacenan los datos originales y las tablas generadas.
--   **core:** Directorio donde se ocupa el código utilizado para el análisis.
--   **img:** Se reserva un directorio para imágenes en caso de necesitar.
+- **ppt:** 
+- **doc:** The analysis is presented in a technical document format using Quarto with Reveal.js. A PDF version is included and can be found [here](doc/technical_en.pdf).
+- **data:** Directory where original data and generated tables are stored.
+- **core:** Directory where the code used for the analysis is located.
+- **img:** A directory is reserved for images in case they are needed.
 
-## Requisitos
+## Requirements
 
-Asegúrese de tener R y las bibliotecas necesarias instaladas. Consulte el archivo `renv.lock` para mayor detalle.
+Make sure you have R and the necessary libraries installed. Refer to the `renv.lock` file for more details.
 
-## Pendiente
+## Pending
 
-Los siguientes bloques de códigos ("chunks") están pendientes de mejora: chunk 6 y 7
+The following code blocks ("chunks") are pending improvement: chunk 6 and 7
 
-------------------------------------------------------------------------
+---
 
-**Nota:** Se recomienda clonar este repositorio y ejecutar el código en su propio entorno para replicar los resultados.
+**Note:** It is recommended to clone this repository and run the code in your own environment to replicate the results.
